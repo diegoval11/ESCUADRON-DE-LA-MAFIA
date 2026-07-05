@@ -1,4 +1,4 @@
-[
+module.exports = [
   {
     "id": "fund-001",
     "modes": ["quiz", "timed"],

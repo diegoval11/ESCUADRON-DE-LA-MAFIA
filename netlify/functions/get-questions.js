@@ -18,11 +18,8 @@ exports.handler = async (event) => {
 
   const userRating = calculateUserRating(user.skill_level || 'basico', user.points || 0, user.level || 1);
 
-  const fs = require('fs');
-  const path = require('path');
-  const bankPath = path.resolve(__dirname, 'questions.json');
-  if (!fs.existsSync(bankPath)) return error(503, 'Banco de preguntas no disponible');
-  const bank = JSON.parse(fs.readFileSync(bankPath, 'utf-8'));
+  let bank;
+  try { bank = require('./questions.json'); } catch { return error(503, 'Banco de preguntas no disponible'); }
   if (!Array.isArray(bank)) return error(503, 'Banco de preguntas corrupto');
 
   const selected = pickByDifficultyWindow(bank, count, userRating, [], (q) => {

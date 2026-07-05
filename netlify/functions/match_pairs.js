@@ -1,4 +1,4 @@
-[
+module.exports = [
   { "id": "match-html", "term": "HTML", "def": "Estructura de una página web", "difficulty": 40, "topic": "web" },
   { "id": "match-css", "term": "CSS", "def": "Estilos y diseño visual", "difficulty": 45, "topic": "web" },
   { "id": "match-js", "term": "JavaScript", "def": "Interactividad en el navegador", "difficulty": 55, "topic": "web" },
