@@ -14,17 +14,17 @@ exports.handler = async (event) => {
 
     const hashed = await bcrypt.hash(password, 10);
     try {
-      await pool.execute('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashed]);
+      await pool.query('INSERT INTO users (username, password) VALUES ($1, $2)', [username, hashed]);
       return ok({ message: 'Cuenta creada' });
     } catch (err) {
-      if (err.code === 'ER_DUP_ENTRY') return error(409, 'Ese usuario ya existe');
+      if (err.code === '23505') return error(409, 'Ese usuario ya existe');
       return error(500, 'Error al crear cuenta');
     }
   }
 
   if (action === 'login') {
     if (!username || !password) return error(400, 'Faltan campos');
-    const [rows] = await pool.execute('SELECT * FROM users WHERE username = ?', [username]);
+    const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
     if (rows.length === 0) return error(401, 'Usuario o contraseña incorrectos');
     const user = rows[0];
     const match = await bcrypt.compare(password, user.password);
@@ -43,7 +43,7 @@ exports.handler = async (event) => {
   if (action === 'check') {
     const payload = require('./db').verifyToken(event);
     if (!payload) return error(401, 'No autenticado');
-    const [rows] = await pool.execute('SELECT username, onboarded, points, level, streak FROM users WHERE username = ?', [payload.username]);
+    const { rows } = await pool.query('SELECT username, onboarded, points, level, streak FROM users WHERE username = $1', [payload.username]);
     if (rows.length === 0) return error(404, 'Usuario no encontrado');
     return ok({ user: rows[0] });
   }

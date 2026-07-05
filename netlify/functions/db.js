@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'codequest-secret-change-in-production';
@@ -6,14 +6,14 @@ const JWT_SECRET = process.env.JWT_SECRET || 'codequest-secret-change-in-product
 let pool;
 async function getPool() {
   if (pool) return pool;
-  pool = mysql.createPool({
-    host: process.env.PLANETSCALE_HOST || 'aws.connect.psdb.cloud',
-    user: process.env.PLANETSCALE_USER,
-    password: process.env.PLANETSCALE_PASS,
-    database: process.env.PLANETSCALE_DB || 'login_system',
+  pool = new Pool({
+    host: process.env.SUPABASE_HOST,
+    port: parseInt(process.env.SUPABASE_PORT || '6543'),
+    database: process.env.SUPABASE_DB || 'postgres',
+    user: process.env.SUPABASE_USER,
+    password: process.env.SUPABASE_PASS,
     ssl: { rejectUnauthorized: true },
-    waitForConnections: true,
-    connectionLimit: 5,
+    max: 5,
   });
   return pool;
 }

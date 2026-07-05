@@ -9,11 +9,10 @@ exports.handler = async (event) => {
   const mode = event.queryStringParameters?.mode || 'quiz';
   const count = Math.max(1, Math.min(15, parseInt(event.queryStringParameters?.count) || 8));
   const isDaily = event.queryStringParameters?.daily === '1';
-  const today = new Date().toISOString().slice(0, 10);
   const allowedModes = ['quiz', 'timed'];
   if (!allowedModes.includes(mode)) return error(400, 'Modo inválido');
 
-  const [users] = await pool.execute('SELECT skill_level, points, level FROM users WHERE username = ?', [payload.username]);
+  const { rows: users } = await pool.query('SELECT skill_level, points, level FROM users WHERE username = $1', [payload.username]);
   if (users.length === 0) return error(404, 'Usuario no encontrado');
   const user = users[0];
 
@@ -25,9 +24,6 @@ exports.handler = async (event) => {
   if (!fs.existsSync(bankPath)) return error(503, 'Banco de preguntas no disponible');
   const bank = JSON.parse(fs.readFileSync(bankPath, 'utf-8'));
   if (!Array.isArray(bank)) return error(503, 'Banco de preguntas corrupto');
-
-  const dailyKey = `codequest_daily_${payload.username}`;
-  // For daily quiz, state is managed client-side via localStorage
 
   const selected = pickByDifficultyWindow(bank, count, userRating, [], (q) => {
     if (!q.q || !q.options || q.correct === undefined) return false;

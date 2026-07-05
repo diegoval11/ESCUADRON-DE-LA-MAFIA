@@ -8,7 +8,7 @@ exports.handler = async (event) => {
   const pool = await getPool();
   const count = Math.max(4, Math.min(8, parseInt(event.queryStringParameters?.count) || 6));
 
-  const [users] = await pool.execute('SELECT skill_level, points, level FROM users WHERE username = ?', [payload.username]);
+  const { rows: users } = await pool.query('SELECT skill_level, points, level FROM users WHERE username = $1', [payload.username]);
   if (users.length === 0) return error(404, 'Usuario no encontrado');
   const user = users[0];
   const userRating = calculateUserRating(user.skill_level || 'basico', user.points || 0, user.level || 1);

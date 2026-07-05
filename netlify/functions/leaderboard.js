@@ -5,6 +5,6 @@ exports.handler = async (event) => {
   if (!payload) return error(401, 'No autenticado');
 
   const pool = await getPool();
-  const [rows] = await pool.execute('SELECT username, points, level FROM users ORDER BY points DESC LIMIT 20');
+  const { rows } = await pool.query('SELECT username, points, level FROM users ORDER BY points DESC LIMIT 20');
   return ok({ leaderboard: rows });
 };

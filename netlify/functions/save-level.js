@@ -10,6 +10,6 @@ exports.handler = async (event) => {
   if (!allowed.includes(level)) return error(400, 'Nivel inválido');
 
   const pool = await getPool();
-  await pool.execute('UPDATE users SET skill_level = ?, onboarded = 1 WHERE username = ?', [level, payload.username]);
+  await pool.query('UPDATE users SET skill_level = $1, onboarded = true WHERE username = $2', [level, payload.username]);
   return ok({});
 };
