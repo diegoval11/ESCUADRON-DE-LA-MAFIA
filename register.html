@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear cuenta · CodeQuest</title>
+  <script>(function(){try{if(localStorage.getItem('codequest_theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}})();</script>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="theme-toggle-float">
+    <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Cambiar entre tema claro y oscuro">
+      <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+      <span class="theme-toggle-label">Oscuro</span>
+    </button>
+  </div>
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
+  </div>
+  <div class="card">
+    <h2>Crea tu cuenta</h2>
+    <p class="subtitle">Regístrate para empezar</p>
+    <div id="alertBox"></div>
+    <form id="registerForm">
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text" name="username" placeholder="Elige un usuario" required autofocus>
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" name="password" id="password" class="pw-input" placeholder="Mínimo 6 caracteres" required>
+        <span class="toggle-pw" onclick="togglePassword()" id="toggleIcon">👁️</span>
+      </div>
+      <button type="submit" class="submit-btn" id="registerBtn">Crear cuenta</button>
+    </form>
+    <div class="switch-link">
+      ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+    </div>
+  </div>
+  <script>
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('toggleIcon');
+      if (input.type === 'password') { input.type = 'text'; icon.textContent = '🙈'; }
+      else { input.type = 'password'; icon.textContent = '👁️'; }
+    }
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('registerBtn');
+      btn.disabled = true; btn.textContent = 'Creando...';
+      const fd = new FormData(e.target);
+      try {
+        const res = await fetch('/api/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'register', username: fd.get('username'), password: fd.get('password') }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          window.location.href = 'login.html?registered=1';
+        } else {
+          document.getElementById('alertBox').innerHTML = '<div class="alert alert-error">' + (data.error || 'Error al crear cuenta') + '</div>';
+          btn.disabled = false; btn.textContent = 'Crear cuenta';
+        }
+      } catch {
+        document.getElementById('alertBox').innerHTML = '<div class="alert alert-error">Error de conexión. Intenta de nuevo.</div>';
+        btn.disabled = false; btn.textContent = 'Crear cuenta';
+      }
+    });
+  </script>
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>

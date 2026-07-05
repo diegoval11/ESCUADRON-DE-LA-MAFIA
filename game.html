@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jugar · CodeQuest</title>
+  <script>(function(){try{if(localStorage.getItem('codequest_theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}})();</script>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="has-bottom-nav">
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
+  </div>
+  <div class="hub-wrap app-shell">
+    <header class="app-header">
+      <div class="app-header-start">
+        <span class="nav-greeting" id="greeting">Hola</span>
+      </div>
+      <div class="app-header-actions">
+        <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Cambiar entre tema claro y oscuro">
+          <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+          <span class="theme-toggle-label">Oscuro</span>
+        </button>
+        <a href="#" id="logoutBtn" class="nav-exit">Salir</a>
+      </div>
+    </header>
+    <div class="stats-bar">
+      <div class="stat-pill"><div class="num" id="statPoints">0</div><div class="label">Puntos</div></div>
+      <div class="stat-pill"><div class="num" id="statLevel">1</div><div class="label">Nivel</div></div>
+      <div class="stat-pill"><div class="num" id="statStreak">🔥 0</div><div class="label">Racha</div></div>
+    </div>
+    <div class="level-progress">
+      <div class="top-row">
+        <span id="levelProgressLabel">Nivel 1</span>
+        <span id="progressLabel">0/100 pts</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+      </div>
+    </div>
+    <div class="mode-grid" id="menuView">
+      <div class="mode-card mode-card-daily" id="dailyQuizCard" onclick="openGame('quiz')">
+        <div class="daily-badge" id="dailyBadge">Reto diario</div>
+        <div class="icon">📅</div>
+        <h3>Quiz diario</h3>
+        <p id="dailyCardHint">8 preguntas · 1 oportunidad al día</p>
+      </div>
+      <div class="mode-card" onclick="openGame('flash')">
+        <div class="icon">🗂️</div>
+        <h3>Flashcards</h3>
+        <p>Memoriza conceptos</p>
+      </div>
+      <div class="mode-card" onclick="openGame('match')">
+        <div class="icon">🔗</div>
+        <h3>Emparejar</h3>
+        <p>Arrastra y conecta</p>
+      </div>
+      <div class="mode-card" onclick="openGame('timed')">
+        <div class="icon">⚡</div>
+        <h3>Contrarreloj</h3>
+        <p>Responde rápido</p>
+      </div>
+      <div class="mode-card mode-locked" id="codeCard" onclick="openGame('code')">
+        <div class="icon">🔒</div>
+        <h3>Programa al Gato</h3>
+        <p>Se desbloquea con 300 pts</p>
+      </div>
+      <div class="mode-card mode-locked" id="codeAdvCard" onclick="openGame('codeadv')">
+        <div class="icon">🔒</div>
+        <h3>Programa al Gato: Avanzado</h3>
+        <p>Se desbloquea con 300 pts</p>
+      </div>
+    </div>
+    <div class="game-panel" id="panel-quiz"><button class="back-btn" onclick="backToMenu()">← Volver</button><div id="quizArea"></div></div>
+    <div class="game-panel" id="panel-flash"><button class="back-btn" onclick="backToMenu()">← Volver</button><div id="flashArea"></div></div>
+    <div class="game-panel" id="panel-match"><button class="back-btn" onclick="backToMenu()">← Volver</button><div id="matchArea"></div></div>
+    <div class="game-panel" id="panel-timed"><button class="back-btn" onclick="backToMenu()">← Volver</button><div id="timedArea"></div></div>
+    <div class="game-panel" id="panel-code"><button class="back-btn" onclick="backToMenu()">← Volver</button><div id="codeArea"></div></div>
+    <div class="game-panel" id="panel-codeadv"><button class="back-btn" onclick="backToMenu()">← Volver</button><div id="codeAdvArea"></div></div>
+  </div>
+  <div class="toast-wrap" id="toastWrap"></div>
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <a href="dashboard.html" class="bottom-nav-item"><svg class="bottom-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z" fill="currentColor"/></svg><span>Panel</span></a>
+    <a href="game.html" class="bottom-nav-item is-active"><svg class="bottom-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg><span>Jugar</span></a>
+    <a href="leaderboard.html" class="bottom-nav-item"><svg class="bottom-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h2v8H7V4zm4 3h2v5h-2V7zm4 4h2v4h-2v-4zM5 20h14v2H5v-2z" fill="currentColor"/></svg><span>Ranking</span></a>
+    <a href="achievements.html" class="bottom-nav-item"><svg class="bottom-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 5.4L20 8.2l-4 3.8.9 5.5L12 15.8 7.1 17.5 8 12 4 8.2l5.6-.8L12 2z" fill="currentColor"/></svg><span>Logros</span></a>
+  </nav>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script src="assets/sounds.js"></script>
+  <script src="assets/js/quiz-feedback.js"></script>
+  <script src="assets/js/game-core.js"></script>
+  <script src="assets/js/quiz-daily.js"></script>
+  <script src="assets/js/match.js"></script>
+  <script src="assets/js/timed.js"></script>
+  <script src="assets/js/flash.js"></script>
+  <script src="assets/js/cat-game.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script>
+    const token = localStorage.getItem('codequest_token');
+    if (!token) { window.location.href = 'login.html'; }
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('codequest_token');
+      window.location.href = 'login.html';
+    });
+    (async function() {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const username = payload.username;
+        const res = await fetch('/api/get-user-stats', { headers: { 'Authorization': 'Bearer ' + token } });
+        const data = await res.json();
+        if (data.ok) {
+          window.CODEQUEST = {
+            username: username,
+            codeUnlocked: data.codeUnlocked || data.points >= 300,
+            codeUnlockPoints: 300
+          };
+          document.getElementById('greeting').textContent = 'Hola, ' + username;
+          updateProgressUI(data);
+        }
+      } catch(e) {
+        console.error('Failed to load stats', e);
+      }
+    })();
+  </script>
+</body>
+</html>

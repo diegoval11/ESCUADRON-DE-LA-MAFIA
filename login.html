@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión · CodeQuest</title>
+  <script>(function(){try{if(localStorage.getItem('codequest_theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}})();</script>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="theme-toggle-float">
+    <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Cambiar entre tema claro y oscuro">
+      <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+      <span class="theme-toggle-label">Oscuro</span>
+    </button>
+  </div>
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
+  </div>
+  <div class="card">
+    <h2>Bienvenido de nuevo</h2>
+    <p class="subtitle">Ingresa tus datos para continuar</p>
+    <div id="alertBox"></div>
+    <form id="loginForm">
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text" name="username" placeholder="Tu usuario" required autofocus>
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" name="password" id="password" class="pw-input" placeholder="Tu contraseña" required>
+        <span class="toggle-pw" onclick="togglePassword()" id="toggleIcon">👁️</span>
+      </div>
+      <button type="submit" class="submit-btn" id="loginBtn">Iniciar sesión</button>
+    </form>
+    <div class="switch-link">
+      ¿No tienes cuenta? <a href="register.html">Regístrate</a>
+    </div>
+  </div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('registered')) {
+      document.getElementById('alertBox').innerHTML = '<div class="alert alert-success">Cuenta creada. Ya puedes iniciar sesión.</div>';
+    }
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('toggleIcon');
+      if (input.type === 'password') { input.type = 'text'; icon.textContent = '🙈'; }
+      else { input.type = 'password'; icon.textContent = '👁️'; }
+    }
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true; btn.textContent = 'Ingresando...';
+      const fd = new FormData(e.target);
+      try {
+        const res = await fetch('/api/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', username: fd.get('username'), password: fd.get('password') }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          localStorage.setItem('codequest_token', data.token);
+          window.location.href = data.onboarded ? 'dashboard.html' : 'onboarding.html';
+        } else {
+          document.getElementById('alertBox').innerHTML = '<div class="alert alert-error">' + (data.error || 'Error al iniciar sesión') + '</div>';
+          btn.disabled = false; btn.textContent = 'Iniciar sesión';
+        }
+      } catch {
+        document.getElementById('alertBox').innerHTML = '<div class="alert alert-error">Error de conexión. Intenta de nuevo.</div>';
+        btn.disabled = false; btn.textContent = 'Iniciar sesión';
+      }
+    });
+  </script>
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>

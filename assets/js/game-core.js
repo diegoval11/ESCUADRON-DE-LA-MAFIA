@@ -10,6 +10,11 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+function authHeaders() {
+  const token = localStorage.getItem('codequest_token');
+  return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
+
 function openGame(mode) {
   if ((mode === 'code' || mode === 'codeadv') && !codeUnlocked) {
     showLockedNotice();
@@ -68,7 +73,7 @@ function updateProgressUI(data) {
 async function refreshGameStats() {
   if (!document.getElementById('statPoints')) return;
   try {
-    const res = await fetch('get_user_stats.php');
+    const res = await fetch('/api/get-user-stats', { headers: authHeaders() });
     const data = await res.json();
     if (data.ok) updateProgressUI(data);
   } catch (_) {}
@@ -122,9 +127,9 @@ function showUnlockToast() {
 
 async function saveScore(points) {
   try {
-    const res = await fetch('save_score.php', {
+    const res = await fetch('/api/save-score', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
       body: JSON.stringify({ points }),
     });
 
@@ -221,7 +226,7 @@ function showQuestionLoadError(area, message, onRetry) {
 async function fetchQuestions(mode, count = 8, daily = false) {
   const params = new URLSearchParams({ mode, count: String(count) });
   if (daily) params.set('daily', '1');
-  const res = await fetch(`get_questions.php?${params}`);
+  const res = await fetch(`/api/get-questions?${params}`, { headers: authHeaders() });
   const data = await res.json();
   if (data.error === 'daily_done') {
     const err = new Error(data.message || 'Reto diario completado.');
@@ -233,16 +238,16 @@ async function fetchQuestions(mode, count = 8, daily = false) {
 }
 
 async function fetchMatchPairs(count = 6) {
-  const res = await fetch(`get_match_pairs.php?count=${count}`);
+  const res = await fetch(`/api/get-match-pairs?count=${count}`, { headers: authHeaders() });
   const data = await res.json();
   if (!res.ok || !data.ok) throw new Error(data.error || 'No se pudieron cargar los pares.');
   return data.pairs;
 }
 
 async function markQuestionsComplete(ids) {
-  await fetch('mark_questions.php', {
+  await fetch('/api/mark-questions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify({ ids }),
   });
 }

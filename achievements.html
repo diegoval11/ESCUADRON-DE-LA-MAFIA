@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logros · CodeQuest</title>
+  <script>(function(){try{if(localStorage.getItem('codequest_theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}})();</script>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="has-bottom-nav">
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
+  </div>
+  <div class="hub-wrap hub-narrow app-shell">
+    <header class="app-header">
+      <div class="app-header-start">
+        <span class="nav-greeting" id="greeting">Hola</span>
+      </div>
+      <div class="app-header-actions">
+        <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Cambiar entre tema claro y oscuro">
+          <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+          <span class="theme-toggle-label">Oscuro</span>
+        </button>
+        <a href="#" id="logoutBtn" class="nav-exit">Salir</a>
+      </div>
+    </header>
+    <h2 class="page-heading">Logros</h2>
+    <p id="achievementSummary" style="color:var(--text-muted); font-size:13px; margin-bottom:16px;">Cargando...</p>
+    <div class="badges-grid" id="badgesGrid"></div>
+  </div>
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <a href="dashboard.html" class="bottom-nav-item"><svg class="bottom-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z" fill="currentColor"/></svg><span>Panel</span></a>
+    <a href="game.html" class="bottom-nav-item"><svg class="bottom-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg><span>Jugar</span></a>
+    <a href="leaderboard.html" class="bottom-nav-item"><svg class="bottom-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h2v8H7V4zm4 3h2v5h-2V7zm4 4h2v4h-2v-4zM5 20h14v2H5v-2z" fill="currentColor"/></svg><span>Ranking</span></a>
+    <a href="achievements.html" class="bottom-nav-item is-active"><svg class="bottom-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 5.4L20 8.2l-4 3.8.9 5.5L12 15.8 7.1 17.5 8 12 4 8.2l5.6-.8L12 2z" fill="currentColor"/></svg><span>Logros</span></a>
+  </nav>
+  <script>
+    const token = localStorage.getItem('codequest_token');
+    if (!token) { window.location.href = 'login.html'; }
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('codequest_token');
+      window.location.href = 'login.html';
+    });
+    (async function() {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        document.getElementById('greeting').textContent = 'Hola, ' + payload.username;
+        const res = await fetch('/api/achievements', { headers: { 'Authorization': 'Bearer ' + token } });
+        const data = await res.json();
+        if (data.ok) {
+          document.getElementById('achievementSummary').textContent = 'Has desbloqueado ' + data.earnedCount + ' de ' + data.total + ' logros';
+          let html = '';
+          for (const ach of data.achievements) {
+            const earned = data.earned[ach.code];
+            html += '<div class="badge-card' + (earned ? '' : ' locked') + '">';
+            html += '<div class="badge-icon">' + ach.icon + '</div>';
+            html += '<div class="badge-name">' + ach.name + '</div>';
+            html += '<div class="badge-desc">' + ach.description + '</div>';
+            if (earned) {
+              const d = new Date(earned);
+              html += '<div class="badge-date">' + d.toLocaleDateString('es-MX') + '</div>';
+            }
+            html += '</div>';
+          }
+          document.getElementById('badgesGrid').innerHTML = html;
+        }
+      } catch {}
+    })();
+  </script>
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>
