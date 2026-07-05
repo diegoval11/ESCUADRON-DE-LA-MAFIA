@@ -16,21 +16,21 @@ $rank = 0;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ranking</title>
+  <title>Ranking · CodeQuest</title>
+  <?php include __DIR__ . '/partials/theme-head.php'; ?>
   <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body class="has-bottom-nav">
 
   <div class="brand">
-    <div class="brand-icon">🏆</div>
-    Ranking
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
   </div>
 
-  <div class="hub-wrap" style="max-width:480px;">
-    <nav class="top-actions" aria-label="Navegación secundaria">
-      <a href="game.php">← Volver al juego</a>
-      <a href="dashboard.php">Panel</a>
-    </nav>
+  <div class="hub-wrap hub-narrow-sm app-shell">
+    <?php include __DIR__ . '/partials/app-header.php'; ?>
+
+    <h2 class="page-heading">Ranking</h2>
 
     <?php while ($u = $result->fetch_assoc()): $rank++; ?>
       <div class="lb-row <?php echo ($u['username'] === $me) ? 'me' : ''; ?>">
@@ -42,5 +42,8 @@ $rank = 0;
     <?php endwhile; ?>
   </div>
 
+  <?php $navActive = 'ranking'; include __DIR__ . '/partials/bottom-nav.php'; ?>
+
+  <script src="assets/js/theme.js"></script>
 </body>
 </html>

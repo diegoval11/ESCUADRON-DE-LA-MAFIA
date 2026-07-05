@@ -24,33 +24,37 @@ $streak = $stats["streak"] ?? 0;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel</title>
+  <title>Panel · CodeQuest</title>
+  <?php include __DIR__ . '/partials/theme-head.php'; ?>
   <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body class="has-bottom-nav">
 
   <div class="brand">
-    <div class="brand-icon">🔒</div>
-    MiPlataforma
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
   </div>
 
-  <div class="card dashboard-card">
-    <div class="avatar"><?php echo htmlspecialchars($initial); ?></div>
-    <h2>Hola, <?php echo htmlspecialchars($username); ?> 👋</h2>
-    <p class="subtitle">Has iniciado sesión correctamente</p>
+  <div class="hub-wrap hub-centered app-shell">
+    <?php include __DIR__ . '/partials/app-header.php'; ?>
 
-    <div class="stats-bar" style="margin-bottom: 20px;">
-      <div class="stat-pill"><div class="num"><?php echo $points; ?></div><div class="label">Puntos</div></div>
-      <div class="stat-pill"><div class="num"><?php echo $level; ?></div><div class="label">Nivel</div></div>
-      <div class="stat-pill"><div class="num">🔥 <?php echo $streak; ?></div><div class="label">Racha</div></div>
+    <div class="card dashboard-card">
+      <div class="avatar"><?php echo htmlspecialchars($initial); ?></div>
+      <h2>Hola, <?php echo htmlspecialchars($username); ?></h2>
+      <p class="subtitle">Tu progreso de hoy</p>
+
+      <div class="stats-bar">
+        <div class="stat-pill"><div class="num"><?php echo $points; ?></div><div class="label">Puntos</div></div>
+        <div class="stat-pill"><div class="num"><?php echo $level; ?></div><div class="label">Nivel</div></div>
+        <div class="stat-pill"><div class="num"><?php echo $streak; ?></div><div class="label">Racha</div></div>
+      </div>
+
+      <a href="game.php" class="btn-primary">Reto diario</a>
     </div>
-
-    <a href="game.php" class="btn-primary" style="display:inline-block; text-decoration:none; margin-bottom: 10px; width: 100%; box-sizing: border-box; text-align:center;">🎮 Jugar y aprender</a>
-    <br>
-    <a href="leaderboard.php" style="display:inline-block; color: rgba(255,255,255,0.75); font-size: 13px; margin-top: 6px; text-decoration: none;">🏆 Ver ranking</a>
-    <br>
-    <a href="logout.php" class="logout-link">Cerrar sesión</a>
   </div>
 
+  <?php $navActive = 'panel'; include __DIR__ . '/partials/bottom-nav.php'; ?>
+
+  <script src="assets/js/theme.js"></script>
 </body>
 </html>

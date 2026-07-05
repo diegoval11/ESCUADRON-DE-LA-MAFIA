@@ -31,15 +31,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crear cuenta</title>
+  <title>Crear cuenta · CodeQuest</title>
+  <?php include __DIR__ . '/partials/theme-head.php'; ?>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-  <div class="brand">
-    <div class="brand-icon">🔒</div>
-        CodeQuestion
+  <div class="theme-toggle-float">
+    <?php include __DIR__ . '/partials/theme-toggle.php'; ?>
+  </div>
 
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
   </div>
 
   <div class="card">
@@ -83,6 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
   </script>
+  <script src="assets/js/theme.js"></script>
 
 </body>
 </html>

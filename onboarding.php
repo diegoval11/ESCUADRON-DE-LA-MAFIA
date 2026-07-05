@@ -14,18 +14,23 @@ $username = $_SESSION["user"];
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configura tu perfil</title>
+  <title>Configura tu perfil · CodeQuest</title>
+  <?php include __DIR__ . '/partials/theme-head.php'; ?>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
+  <div class="theme-toggle-float">
+    <?php include __DIR__ . '/partials/theme-toggle.php'; ?>
+  </div>
+
   <div class="brand">
-    <div class="brand-icon">🔒</div>
-    CodeQuestion
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
   </div>
 
   <div class="card onboard-wrap" id="stepChoice">
-    <h2>¡Hola, <?php echo htmlspecialchars($username); ?>! 👋</h2>
+    <h2>Hola, <?php echo htmlspecialchars($username); ?></h2>
     <p class="subtitle">Antes de empezar, cuéntanos tu nivel de programación</p>
 
     <div class="choice-grid">
@@ -198,6 +203,7 @@ function startAssessment() {
   render();
 }
 </script>
+<script src="assets/js/theme.js"></script>
 
 </body>
 </html>

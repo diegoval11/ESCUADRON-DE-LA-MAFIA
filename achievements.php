@@ -30,23 +30,23 @@ $all = $conn->query("SELECT * FROM achievements ORDER BY type, threshold");
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Logros</title>
+  <title>Logros · CodeQuest</title>
+  <?php include __DIR__ . '/partials/theme-head.php'; ?>
   <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body class="has-bottom-nav">
 
   <div class="brand">
-    <div class="brand-icon">🏅</div>
-    Mis Logros
+    <div class="brand-icon" aria-hidden="true">Q</div>
+    CodeQuest
   </div>
 
-  <div class="hub-wrap" style="max-width:600px;">
-    <nav class="top-actions" aria-label="Navegación secundaria">
-      <a href="game.php">← Volver al juego</a>
-      <a href="dashboard.php">Panel</a>
-    </nav>
+  <div class="hub-wrap hub-narrow app-shell">
+    <?php include __DIR__ . '/partials/app-header.php'; ?>
 
-    <p style="color:rgba(255,255,255,0.7); font-size:13px; margin-bottom:16px;">
+    <h2 class="page-heading">Logros</h2>
+
+    <p style="color:var(--text-muted); font-size:13px; margin-bottom:16px;">
       Has desbloqueado <?php echo count($earned); ?> de <?php echo $all->num_rows; ?> logros
     </p>
 
@@ -66,5 +66,8 @@ $all = $conn->query("SELECT * FROM achievements ORDER BY type, threshold");
     </div>
   </div>
 
+  <?php $navActive = 'achievements'; include __DIR__ . '/partials/bottom-nav.php'; ?>
+
+  <script src="assets/js/theme.js"></script>
 </body>
 </html>
