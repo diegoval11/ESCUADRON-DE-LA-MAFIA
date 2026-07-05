@@ -12,7 +12,7 @@ async function getPool() {
     database: process.env.SUPABASE_DB || 'postgres',
     user: process.env.SUPABASE_USER,
     password: process.env.SUPABASE_PASS,
-    ssl: { rejectUnauthorized: true },
+    ssl: { rejectUnauthorized: false },
     max: 5,
   });
   return pool;
