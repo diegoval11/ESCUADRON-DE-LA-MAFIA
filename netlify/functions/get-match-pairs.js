@@ -15,7 +15,7 @@ exports.handler = async (event) => {
 
   const fs = require('fs');
   const path = require('path');
-  const bankPath = path.resolve(__dirname, '../../data/match_pairs.json');
+  const bankPath = path.resolve(__dirname, 'match_pairs.json');
   if (!fs.existsSync(bankPath)) return error(503, 'Banco de emparejamiento no disponible');
   const bank = JSON.parse(fs.readFileSync(bankPath, 'utf-8'));
   if (!Array.isArray(bank)) return error(503, 'Banco corrupto');

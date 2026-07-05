@@ -1,0 +1,22 @@
+[
+  { "id": "match-html", "term": "HTML", "def": "Estructura de una página web", "difficulty": 40, "topic": "web" },
+  { "id": "match-css", "term": "CSS", "def": "Estilos y diseño visual", "difficulty": 45, "topic": "web" },
+  { "id": "match-js", "term": "JavaScript", "def": "Interactividad en el navegador", "difficulty": 55, "topic": "web" },
+  { "id": "match-php", "term": "PHP", "def": "Lógica del lado del servidor", "difficulty": 70, "topic": "php" },
+  { "id": "match-mysql", "term": "MySQL", "def": "Almacena datos en tablas", "difficulty": 75, "topic": "sql" },
+  { "id": "match-git", "term": "Git", "def": "Control de versiones del código", "difficulty": 90, "topic": "herramientas" },
+  { "id": "match-var", "term": "Variable", "def": "Contenedor con nombre para un valor", "difficulty": 15, "topic": "fundamentos" },
+  { "id": "match-func", "term": "Función", "def": "Bloque reutilizable que realiza una tarea", "difficulty": 25, "topic": "fundamentos" },
+  { "id": "match-loop", "term": "Bucle", "def": "Repite un bloque de código varias veces", "difficulty": 35, "topic": "fundamentos" },
+  { "id": "match-if", "term": "Condicional", "def": "Ejecuta código según una condición", "difficulty": 30, "topic": "fundamentos" },
+  { "id": "match-array", "term": "Array", "def": "Lista ordenada de valores", "difficulty": 50, "topic": "fundamentos" },
+  { "id": "match-api", "term": "API", "def": "Reglas para que dos programas se comuniquen", "difficulty": 120, "topic": "web" },
+  { "id": "match-json", "term": "JSON", "def": "Formato de texto para intercambiar datos", "difficulty": 100, "topic": "web" },
+  { "id": "match-http", "term": "HTTP", "def": "Protocolo de comunicación web", "difficulty": 130, "topic": "web" },
+  { "id": "match-select", "term": "SELECT", "def": "Consulta SQL para leer filas", "difficulty": 110, "topic": "sql" },
+  { "id": "match-commit", "term": "Commit", "def": "Instantánea guardada del historial Git", "difficulty": 140, "topic": "herramientas" },
+  { "id": "match-drf", "term": "DRF", "def": "Framework REST para Django", "difficulty": 480, "topic": "python" },
+  { "id": "match-mvc", "term": "MVC", "def": "Patrón Modelo-Vista-Controlador", "difficulty": 260, "topic": "patrones" },
+  { "id": "match-orm", "term": "ORM", "def": "Mapea tablas a objetos en código", "difficulty": 320, "topic": "patrones" },
+  { "id": "match-docker", "term": "Docker", "def": "Empaqueta apps en contenedores", "difficulty": 350, "topic": "devops" }
+]

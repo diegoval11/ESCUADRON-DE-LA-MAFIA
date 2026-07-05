@@ -20,7 +20,7 @@ exports.handler = async (event) => {
 
   const fs = require('fs');
   const path = require('path');
-  const bankPath = path.resolve(__dirname, '../../data/questions.json');
+  const bankPath = path.resolve(__dirname, 'questions.json');
   if (!fs.existsSync(bankPath)) return error(503, 'Banco de preguntas no disponible');
   const bank = JSON.parse(fs.readFileSync(bankPath, 'utf-8'));
   if (!Array.isArray(bank)) return error(503, 'Banco de preguntas corrupto');
