@@ -19,7 +19,7 @@ exports.handler = async (event) => {
   const userRating = calculateUserRating(user.skill_level || 'basico', user.points || 0, user.level || 1);
 
   let bank;
-  try { bank = require('./questions.json'); } catch { return error(503, 'Banco de preguntas no disponible'); }
+  try { bank = require('./questions'); } catch { return error(503, 'Banco de preguntas no disponible'); }
   if (!Array.isArray(bank)) return error(503, 'Banco de preguntas corrupto');
 
   const selected = pickByDifficultyWindow(bank, count, userRating, [], (q) => {

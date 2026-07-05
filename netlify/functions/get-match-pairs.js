@@ -14,7 +14,7 @@ exports.handler = async (event) => {
   const userRating = calculateUserRating(user.skill_level || 'basico', user.points || 0, user.level || 1);
 
   let bank;
-  try { bank = require('./match_pairs.json'); } catch { return error(503, 'Banco de emparejamiento no disponible'); }
+  try { bank = require('./match_pairs'); } catch { return error(503, 'Banco de emparejamiento no disponible'); }
   if (!Array.isArray(bank)) return error(503, 'Banco corrupto');
 
   const selected = pickByDifficultyWindow(bank, count, userRating, [], (item) => !!(item.term && item.def));
